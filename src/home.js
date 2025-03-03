@@ -1,9 +1,29 @@
 import foodImage from '../img/homepage.jpg';
 
+/**
+ * Load the home page content
+ */
 function loadHomePage() {
   const content = document.querySelector('#content');
 
-  // Create hero section
+  // Create document fragment for better performance
+  const fragment = document.createDocumentFragment();
+
+  // Add hero section
+  fragment.appendChild(createHeroSection());
+
+  // Add intro section
+  fragment.appendChild(createIntroSection());
+
+  // Add all content to the page
+  content.appendChild(fragment);
+}
+
+/**
+ * Create the hero section
+ * @returns {HTMLElement} The hero section element
+ */
+function createHeroSection() {
   const heroDiv = document.createElement('div');
   heroDiv.classList.add('hero');
 
@@ -12,13 +32,21 @@ function loadHomePage() {
 
   const heroImage = document.createElement('img');
   heroImage.src = foodImage;
-  heroImage.alt = 'An image of delicious food';
+  heroImage.alt = 'Delicious food served at Jade\'s Restaurant';
   heroImage.classList.add('hero-image');
+  heroImage.loading = 'eager'; // Important image, load immediately
 
   heroDiv.appendChild(heading);
   heroDiv.appendChild(heroImage);
 
-  // Create intro section
+  return heroDiv;
+}
+
+/**
+ * Create the intro section
+ * @returns {HTMLElement} The intro section element
+ */
+function createIntroSection() {
   const introSection = document.createElement('section');
   introSection.classList.add('intro');
 
@@ -35,9 +63,7 @@ function loadHomePage() {
   introSection.appendChild(introPara1);
   introSection.appendChild(introPara2);
 
-  // Append all sections to content
-  content.appendChild(heroDiv);
-  content.appendChild(introSection);
+  return introSection;
 }
 
 export default loadHomePage; 

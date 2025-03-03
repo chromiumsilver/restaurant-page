@@ -1,3 +1,6 @@
+/**
+ * Load the contact page content
+ */
 function loadContact() {
   const content = document.querySelector('#content');
 
@@ -5,195 +8,222 @@ function loadContact() {
   const contactContainer = document.createElement('div');
   contactContainer.classList.add('contact-container');
 
-  // Create contact heading
-  const contactHeading = document.createElement('h2');
-  contactHeading.textContent = 'Contact Us';
-  contactHeading.classList.add('contact-heading');
+  // Create and add contact heading
+  const contactHeading = createHeading('Contact Us', 'contact-heading');
   contactContainer.appendChild(contactHeading);
 
-  // Create contact info section
+  // Create and add contact info section
+  contactContainer.appendChild(createContactInfoSection());
+
+  // Create and add contact form section
+  contactContainer.appendChild(createContactFormSection());
+
+  // Add contact container to content
+  content.appendChild(contactContainer);
+}
+
+/**
+ * Create a heading element
+ * @param {string} text - The heading text
+ * @param {string} className - The CSS class to apply
+ * @returns {HTMLElement} The heading element
+ */
+function createHeading(text, className) {
+  const heading = document.createElement('h2');
+  heading.textContent = text;
+  heading.classList.add(className);
+  return heading;
+}
+
+/**
+ * Create the contact info section
+ * @returns {HTMLElement} The contact info section
+ */
+function createContactInfoSection() {
   const infoSection = document.createElement('section');
   infoSection.classList.add('contact-info');
 
-  // Create address info
-  const addressDiv = document.createElement('div');
-  addressDiv.classList.add('contact-item');
+  // Contact information data
+  const contactItems = [
+    {
+      icon: '📍',
+      iconClass: 'location-icon',
+      title: 'Our Location',
+      content: '123 Culinary Avenue, Foodville, FC 98765'
+    },
+    {
+      icon: '🕒',
+      iconClass: 'hours-icon',
+      title: 'Opening Hours',
+      content: 'Monday - Friday: 11am - 10pm<br>Saturday - Sunday: 10am - 11pm',
+      isHTML: true
+    },
+    {
+      icon: '📞',
+      iconClass: 'phone-icon',
+      title: 'Phone',
+      content: '(555) 123-4567'
+    },
+    {
+      icon: '✉️',
+      iconClass: 'email-icon',
+      title: 'Email',
+      content: 'info@jadesrestaurant.com'
+    }
+  ];
 
-  const addressIcon = document.createElement('div');
-  addressIcon.classList.add('contact-icon');
-  addressIcon.innerHTML = '<i class="location-icon">📍</i>';
+  // Create each contact info item
+  contactItems.forEach(item => {
+    infoSection.appendChild(createContactItem(item));
+  });
 
-  const addressContent = document.createElement('div');
-  addressContent.classList.add('contact-content');
+  return infoSection;
+}
 
-  const addressTitle = document.createElement('h3');
-  addressTitle.textContent = 'Our Location';
+/**
+ * Create a contact information item
+ * @param {Object} item - The contact item data
+ * @returns {HTMLElement} The contact item element
+ */
+function createContactItem(item) {
+  const itemDiv = document.createElement('div');
+  itemDiv.classList.add('contact-item');
 
-  const addressText = document.createElement('p');
-  addressText.textContent = '123 Culinary Avenue, Foodville, FC 98765';
+  // Create icon
+  const iconDiv = document.createElement('div');
+  iconDiv.classList.add('contact-icon');
+  iconDiv.innerHTML = `<i class="${item.iconClass}" aria-hidden="true">${item.icon}</i>`;
 
-  addressContent.appendChild(addressTitle);
-  addressContent.appendChild(addressText);
-  addressDiv.appendChild(addressIcon);
-  addressDiv.appendChild(addressContent);
+  // Create content
+  const contentDiv = document.createElement('div');
+  contentDiv.classList.add('contact-content');
 
-  // Create hours info
-  const hoursDiv = document.createElement('div');
-  hoursDiv.classList.add('contact-item');
+  const title = document.createElement('h3');
+  title.textContent = item.title;
 
-  const hoursIcon = document.createElement('div');
-  hoursIcon.classList.add('contact-icon');
-  hoursIcon.innerHTML = '<i class="hours-icon">🕒</i>';
+  const text = document.createElement('p');
+  if (item.isHTML) {
+    text.innerHTML = item.content;
+  } else {
+    text.textContent = item.content;
+  }
 
-  const hoursContent = document.createElement('div');
-  hoursContent.classList.add('contact-content');
+  contentDiv.appendChild(title);
+  contentDiv.appendChild(text);
 
-  const hoursTitle = document.createElement('h3');
-  hoursTitle.textContent = 'Opening Hours';
+  // Assemble the item
+  itemDiv.appendChild(iconDiv);
+  itemDiv.appendChild(contentDiv);
 
-  const hoursText = document.createElement('p');
-  hoursText.innerHTML = 'Monday - Friday: 11am - 10pm<br>Saturday - Sunday: 10am - 11pm';
+  return itemDiv;
+}
 
-  hoursContent.appendChild(hoursTitle);
-  hoursContent.appendChild(hoursText);
-  hoursDiv.appendChild(hoursIcon);
-  hoursDiv.appendChild(hoursContent);
-
-  // Create phone info
-  const phoneDiv = document.createElement('div');
-  phoneDiv.classList.add('contact-item');
-
-  const phoneIcon = document.createElement('div');
-  phoneIcon.classList.add('contact-icon');
-  phoneIcon.innerHTML = '<i class="phone-icon">📞</i>';
-
-  const phoneContent = document.createElement('div');
-  phoneContent.classList.add('contact-content');
-
-  const phoneTitle = document.createElement('h3');
-  phoneTitle.textContent = 'Phone';
-
-  const phoneText = document.createElement('p');
-  phoneText.textContent = '(555) 123-4567';
-
-  phoneContent.appendChild(phoneTitle);
-  phoneContent.appendChild(phoneText);
-  phoneDiv.appendChild(phoneIcon);
-  phoneDiv.appendChild(phoneContent);
-
-  // Create email info
-  const emailDiv = document.createElement('div');
-  emailDiv.classList.add('contact-item');
-
-  const emailIcon = document.createElement('div');
-  emailIcon.classList.add('contact-icon');
-  emailIcon.innerHTML = '<i class="email-icon">✉️</i>';
-
-  const emailContent = document.createElement('div');
-  emailContent.classList.add('contact-content');
-
-  const emailTitle = document.createElement('h3');
-  emailTitle.textContent = 'Email';
-
-  const emailText = document.createElement('p');
-  emailText.textContent = 'info@jadesrestaurant.com';
-
-  emailContent.appendChild(emailTitle);
-  emailContent.appendChild(emailText);
-  emailDiv.appendChild(emailIcon);
-  emailDiv.appendChild(emailContent);
-
-  // Add all contact items to info section
-  infoSection.appendChild(addressDiv);
-  infoSection.appendChild(hoursDiv);
-  infoSection.appendChild(phoneDiv);
-  infoSection.appendChild(emailDiv);
-
-  // Create contact form section
+/**
+ * Create the contact form section
+ * @returns {HTMLElement} The contact form section
+ */
+function createContactFormSection() {
   const formSection = document.createElement('section');
   formSection.classList.add('contact-form-section');
 
+  // Create form heading
   const formHeading = document.createElement('h3');
   formHeading.textContent = 'Send Us a Message';
   formSection.appendChild(formHeading);
 
+  // Create and add form
+  formSection.appendChild(createContactForm());
+
+  return formSection;
+}
+
+/**
+ * Create the contact form
+ * @returns {HTMLElement} The contact form element
+ */
+function createContactForm() {
   const form = document.createElement('form');
   form.classList.add('contact-form');
   form.setAttribute('action', '#');
   form.setAttribute('method', 'post');
 
-  // Name input
-  const nameGroup = document.createElement('div');
-  nameGroup.classList.add('form-group');
+  // Form fields configuration
+  const formFields = [
+    {
+      type: 'text',
+      id: 'name',
+      label: 'Name:',
+      required: true
+    },
+    {
+      type: 'email',
+      id: 'email',
+      label: 'Email:',
+      required: true
+    },
+    {
+      type: 'textarea',
+      id: 'message',
+      label: 'Message:',
+      rows: 5,
+      required: true
+    }
+  ];
 
-  const nameLabel = document.createElement('label');
-  nameLabel.setAttribute('for', 'name');
-  nameLabel.textContent = 'Name:';
+  // Create form fields
+  formFields.forEach(field => {
+    form.appendChild(createFormField(field));
+  });
 
-  const nameInput = document.createElement('input');
-  nameInput.setAttribute('type', 'text');
-  nameInput.setAttribute('id', 'name');
-  nameInput.setAttribute('name', 'name');
-  nameInput.setAttribute('required', '');
-
-  nameGroup.appendChild(nameLabel);
-  nameGroup.appendChild(nameInput);
-
-  // Email input
-  const emailGroup = document.createElement('div');
-  emailGroup.classList.add('form-group');
-
-  const emailLabel = document.createElement('label');
-  emailLabel.setAttribute('for', 'email');
-  emailLabel.textContent = 'Email:';
-
-  const emailInput = document.createElement('input');
-  emailInput.setAttribute('type', 'email');
-  emailInput.setAttribute('id', 'email');
-  emailInput.setAttribute('name', 'email');
-  emailInput.setAttribute('required', '');
-
-  emailGroup.appendChild(emailLabel);
-  emailGroup.appendChild(emailInput);
-
-  // Message textarea
-  const messageGroup = document.createElement('div');
-  messageGroup.classList.add('form-group');
-
-  const messageLabel = document.createElement('label');
-  messageLabel.setAttribute('for', 'message');
-  messageLabel.textContent = 'Message:';
-
-  const messageTextarea = document.createElement('textarea');
-  messageTextarea.setAttribute('id', 'message');
-  messageTextarea.setAttribute('name', 'message');
-  messageTextarea.setAttribute('rows', '5');
-  messageTextarea.setAttribute('required', '');
-
-  messageGroup.appendChild(messageLabel);
-  messageGroup.appendChild(messageTextarea);
-
-  // Submit button
+  // Add submit button
   const submitButton = document.createElement('button');
   submitButton.setAttribute('type', 'submit');
   submitButton.classList.add('submit-btn');
   submitButton.textContent = 'Send Message';
 
-  // Add form elements to form
-  form.appendChild(nameGroup);
-  form.appendChild(emailGroup);
-  form.appendChild(messageGroup);
   form.appendChild(submitButton);
 
-  // Add form to form section
-  formSection.appendChild(form);
+  return form;
+}
 
-  // Add sections to contact container
-  contactContainer.appendChild(infoSection);
-  contactContainer.appendChild(formSection);
+/**
+ * Create a form field group
+ * @param {Object} field - The field configuration
+ * @returns {HTMLElement} The form field group element
+ */
+function createFormField(field) {
+  const group = document.createElement('div');
+  group.classList.add('form-group');
 
-  // Add contact container to content
-  content.appendChild(contactContainer);
+  // Create label
+  const label = document.createElement('label');
+  label.setAttribute('for', field.id);
+  label.textContent = field.label;
+
+  // Create input or textarea
+  let input;
+  if (field.type === 'textarea') {
+    input = document.createElement('textarea');
+    input.setAttribute('rows', field.rows);
+  } else {
+    input = document.createElement('input');
+    input.setAttribute('type', field.type);
+  }
+
+  // Set common attributes
+  input.setAttribute('id', field.id);
+  input.setAttribute('name', field.id);
+
+  if (field.required) {
+    input.setAttribute('required', '');
+    label.innerHTML += ' <span class="required">*</span>';
+  }
+
+  // Assemble the field group
+  group.appendChild(label);
+  group.appendChild(input);
+
+  return group;
 }
 
 export default loadContact;
